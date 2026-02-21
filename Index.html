@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Імпульс тіла — 7 клас</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --accent: #00d4ff;
+    --accent2: #ff6b35;
+    --accent3: #a855f7;
+    --green: #22c55e;
+    --yellow: #fbbf24;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --card: #161f30;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content:'';
+    position:absolute; inset:0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,212,255,0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 20% 80%, rgba(168,85,247,0.1) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 40% at 80% 20%, rgba(255,107,53,0.1) 0%, transparent 60%);
+  }
+  .hero-badge {
+    font-family:'Unbounded',sans-serif;
+    font-size:11px; letter-spacing:3px;
+    color:var(--accent); text-transform:uppercase;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    padding: 6px 18px; border-radius:50px;
+    margin-bottom:24px; position:relative;
+  }
+  .hero h1 {
+    font-family:'Unbounded',sans-serif;
+    font-size: clamp(40px,8vw,80px);
+    font-weight:900;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent3) 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    line-height:1.1; margin-bottom:16px; position:relative;
+  }
+  .hero-sub {
+    font-size:18px; color:var(--text-dim);
+    max-width:600px; margin:0 auto 40px; position:relative;
+  }
+  .scroll-hint {
+    position:relative;
+    font-size:13px; color:var(--text-dim);
+    display:flex; align-items:center; gap:8px;
+  }
+  .scroll-hint::after {
+    content:'↓';
+    animation: bounce 1.5s infinite;
+  }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+  /* FLOATING PARTICLES in hero */
+  .particle {
+    position:absolute; border-radius:50%;
+    animation: float linear infinite;
+    pointer-events:none;
+  }
+  @keyframes float {
+    0% { transform:translateY(110vh) rotate(0deg); opacity:0; }
+    10% { opacity:1; }
+    90% { opacity:1; }
+    100% { transform:translateY(-10vh) rotate(720deg); opacity:0; }
+  }
+
+  /* SECTIONS */
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
+  .section-label {
+    font-family:'Unbounded',sans-serif;
+    font-size:10px; letter-spacing:4px;
+    text-transform:uppercase;
+    color:var(--accent); margin-bottom:8px;
+  }
+  h2 {
+    font-family:'Unbounded',sans-serif;
+    font-size: clamp(22px,4vw,36px);
+    font-weight:700; margin-bottom:20px;
+    line-height:1.2;
+  }
+  h3 {
+    font-family:'Unbounded',sans-serif;
+    font-size:16px; font-weight:700;
+    margin-bottom:12px; color:var(--accent);
+  }
+  p { margin-bottom:16px; color:var(--text); }
+
+  /* CARDS */
+  .cards-grid {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:16px; margin:24px 0;
+  }
+  .card {
+    background:var(--card);
+    border:1px solid rgba(255,255,255,0.07);
+    border-radius:16px; padding:24px;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    position:relative; overflow:hidden;
+  }
+  .card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    background:var(--accent-color,var(--accent));
+  }
+  .card:hover {
+    transform:translateY(-4px);
+    border-color:rgba(0,212,255,0.3);
+    box-shadow:0 12px 40px rgba(0,212,255,0.1);
+  }
+  .card-emoji { font-size:36px; margin-bottom:12px; display:block; }
+  .card h4 { font-family:'Unbounded',sans-serif; font-size:13px; margin-bottom:8px; }
+  .card p { font-size:14px; color:var(--text-dim); margin:0; }
+
+  /* QUESTION BLOCKS */
+  .question-block {
+    background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(0,212,255,0.05));
+    border:1px solid rgba(168,85,247,0.3);
+    border-radius:16px; padding:24px; margin:20px 0;
+  }
+  .question-block .q-label {
+    font-family:'Unbounded',sans-serif;
+    font-size:10px; letter-spacing:3px; color:var(--accent3);
+    text-transform:uppercase; margin-bottom:10px;
+  }
+  .question-block p { margin:0; font-size:15px; }
+
+  /* EXPERIMENT BLOCKS */
+  .experiment {
+    background:var(--card);
+    border:1px solid rgba(34,197,94,0.2);
+    border-radius:16px; padding:24px; margin:20px 0;
+  }
+  .experiment .exp-label {
+    font-family:'Unbounded',sans-serif;
+    font-size:10px; letter-spacing:3px; color:var(--green);
+    text-transform:uppercase; margin-bottom:10px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .experiment .exp-label::before { content:'🔬'; font-size:14px; }
+
+  /* FORMULA BOX */
+  .formula-box {
+    background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(0,212,255,0.02));
+    border:2px solid rgba(0,212,255,0.4);
+    border-radius:20px; padding:32px;
+    text-align:center; margin:32px 0;
+    position:relative; overflow:hidden;
+  }
+  .formula-box::before {
+    content:''; position:absolute; inset:-1px;
+    border-radius:20px;
+    background: linear-gradient(135deg, rgba(0,212,255,0.2), transparent, rgba(168,85,247,0.2));
+    z-index:-1;
+  }
+  .formula-main {
+    font-family:'Unbounded',sans-serif;
+    font-size:clamp(28px,5vw,52px);
+    font-weight:900;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    margin:12px 0;
+  }
+  .formula-desc {
+    display:flex; justify-content:center; gap:32px;
+    flex-wrap:wrap; margin-top:20px;
+  }
+  .formula-item {
+    background:rgba(255,255,255,0.05);
+    border-radius:12px; padding:12px 20px;
+    text-align:center;
+  }
+  .formula-item .sym {
+    font-family:'Unbounded',sans-serif;
+    font-size:20px; font-weight:700;
+    color:var(--accent);
+  }
+  .formula-item .desc {
+    font-size:12px; color:var(--text-dim); margin-top:4px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height:1px;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    margin:20px 0;
+  }
+
+  /* ======= ANIMATIONS ======= */
+
+  /* 1. Collision animation */
+  #anim-collision {
+    background:var(--surface2);
+    border-radius:16px; padding:20px;
+    margin:24px 0; overflow:hidden;
+    border:1px solid rgba(255,255,255,0.07);
+  }
+  #anim-collision canvas { display:block; margin:0 auto; }
+
+  /* 2. Conservation animation */
+  #anim-conservation {
+    background:var(--surface2);
+    border-radius:16px; padding:20px;
+    margin:24px 0;
+    border:1px solid rgba(255,255,255,0.07);
+  }
+
+  /* Controls */
+  .anim-controls {
+    display:flex; gap:12px; margin-top:16px;
+    flex-wrap:wrap; align-items:center;
+  }
+  .btn {
+    font-family:'Unbounded',sans-serif;
+    font-size:11px; letter-spacing:1px;
+    padding:10px 20px; border-radius:50px;
+    border:none; cursor:pointer;
+    transition:all 0.2s; text-transform:uppercase;
+  }
+  .btn-primary {
+    background:var(--accent); color:#000; font-weight:700;
+  }
+  .btn-primary:hover { background:#33ddff; transform:scale(1.05); }
+  .btn-outline {
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.2); color:var(--text);
+  }
+  .btn-outline:hover { border-color:var(--accent); color:var(--accent); }
+
+  .slider-group { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .slider-group label { font-size:13px; color:var(--text-dim); min-width:120px; }
+  input[type=range] {
+    accent-color:var(--accent); width:120px;
+  }
+  .slider-val {
+    font-family:'Unbounded',sans-serif;
+    font-size:12px; color:var(--accent); min-width:50px;
+  }
+
+  /* INFO display in anim */
+  .anim-info {
+    display:flex; gap:16px; flex-wrap:wrap;
+    margin-top:12px;
+  }
+  .info-chip {
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:8px; padding:8px 14px;
+    font-size:13px;
+  }
+  .info-chip span { color:var(--accent); font-weight:700; }
+
+  /* TASKS */
+  .tasks-section { background:var(--surface); padding:60px 0; }
+  .task-level {
+    display:inline-block;
+    font-family:'Unbounded',sans-serif;
+    font-size:9px; letter-spacing:2px;
+    text-transform:uppercase; padding:4px 12px;
+    border-radius:50px; margin-bottom:8px;
+  }
+  .level-basic { background:rgba(34,197,94,0.15); color:var(--green); border:1px solid rgba(34,197,94,0.3); }
+  .level-mid { background:rgba(251,191,36,0.15); color:var(--yellow); border:1px solid rgba(251,191,36,0.3); }
+  .level-hard { background:rgba(255,107,53,0.15); color:var(--accent2); border:1px solid rgba(255,107,53,0.3); }
+
+  .task-card {
+    background:var(--card);
+    border:1px solid rgba(255,255,255,0.07);
+    border-radius:16px; padding:24px; margin-bottom:16px;
+  }
+  .task-card p { font-size:15px; margin-bottom:16px; }
+  .task-answer {
+    display:none;
+    background:rgba(0,212,255,0.05);
+    border:1px solid rgba(0,212,255,0.2);
+    border-radius:12px; padding:16px;
+    font-size:14px; margin-top:12px;
+  }
+  .task-answer.open { display:block; }
+  .task-answer .answer-title {
+    font-family:'Unbounded',sans-serif;
+    font-size:10px; letter-spacing:2px; color:var(--accent);
+    text-transform:uppercase; margin-bottom:8px;
+  }
+  .task-answer .result {
+    font-family:'Unbounded',sans-serif;
+    font-size:18px; color:var(--accent); font-weight:700;
+  }
+
+  .btn-answer {
+    font-size:12px; padding:8px 16px;
+    background:transparent;
+    border:1px solid rgba(0,212,255,0.3);
+    color:var(--accent); border-radius:8px;
+    cursor:pointer; transition:all 0.2s;
+    font-family:'Nunito',sans-serif;
+  }
+  .btn-answer:hover { background:rgba(0,212,255,0.1); }
+
+  /* TABLE */
+  table { width:100%; border-collapse:collapse; margin:20px 0; font-size:14px; }
+  th {
+    font-family:'Unbounded',sans-serif;
+    font-size:10px; letter-spacing:2px;
+    padding:12px 16px; text-align:left;
+    background:rgba(0,212,255,0.08);
+    border-bottom:2px solid rgba(0,212,255,0.2);
+    color:var(--accent); text-transform:uppercase;
+  }
+  td {
+    padding:12px 16px;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+  }
+  tr:hover td { background:rgba(255,255,255,0.02); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:var(--bg); }
+  ::-webkit-scrollbar-thumb { background:rgba(0,212,255,0.3); border-radius:3px; }
+
+  /* highlight */
+  .highlight { color:var(--accent); font-weight:700; }
+  .highlight2 { color:var(--accent2); font-weight:700; }
+  .highlight3 { color:var(--accent3); font-weight:700; }
+
+  /* step list */
+  .step-list { list-style:none; }
+  .step-list li {
+    display:flex; gap:16px; align-items:flex-start;
+    margin-bottom:16px;
+  }
+  .step-num {
+    flex-shrink:0;
+    width:32px; height:32px;
+    background:linear-gradient(135deg,var(--accent),var(--accent3));
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Unbounded',sans-serif;
+    font-size:12px; font-weight:700; color:#000;
+  }
+
+  /* responsive */
+  @media(max-width:600px){
+    .formula-desc { flex-direction:column; align-items:center; }
+    .anim-controls { flex-direction:column; align-items:flex-start; }
+  }
+
+  /* NAV */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(10,14,26,0.85); backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    padding:12px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .nav-logo {
+    font-family:'Unbounded',sans-serif;
+    font-size:13px; font-weight:700; color:var(--accent);
+  }
+  .nav-links {
+    display:flex; gap:20px; list-style:none;
+  }
+  .nav-links a {
+    font-size:12px; color:var(--text-dim);
+    text-decoration:none; transition:color 0.2s;
+  }
+  .nav-links a:hover { color:var(--accent); }
+  @media(max-width:500px) { .nav-links { display:none; } }
+
+  /* conservation demo */
+  #conserv-canvas { display:block; margin:0 auto; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">⚡ Імпульс</div>
+  <ul class="nav-links">
+    <li><a href="#intro">Суть</a></li>
+    <li><a href="#formula">Формула</a></li>
+    <li><a href="#lab">Аніма-лаб</a></li>
+    <li><a href="#tasks">Задачі</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <!-- particles added by JS -->
+  <div class="hero-badge">Фізика 7 клас</div>
+  <h1>Імпульс тіла</h1>
+  <p class="hero-sub">Чому куля важить 10 г, але пробиває стіну? Чому корабель важко зупинити? Дізнайся секрет руху!</p>
+  <div class="scroll-hint">Гортай вниз</div>
+</section>
+
+<!-- SECTION 1: EVERYDAY EXAMPLES -->
+<section id="intro" class="section">
+  <div class="section-label">Крок 1 — навколо нас</div>
+  <h2>Ти вже знав про імпульс — просто не знав його назви</h2>
+  <p>Уяви: ти стоїш на тротуарі. До тебе котиться <span class="highlight">м'яч для тенісу</span> і <span class="highlight2">ядро для штовхання</span> — обидва з однаковою швидкістю. Яке страшніше впіймати?</p>
+  <p>Тепер інша ситуація: дві однакові кулі летять на тебе, але одна — <span class="highlight">повільно</span>, а інша — <span class="highlight2">дуже швидко</span>. Яку небезпечніше спіймати?</p>
+
+  <div class="question-block">
+    <div class="q-label">🤔 Подумай сам</div>
+    <p>Що більше «відчуває» тіло від удару — маса чи швидкість? А може, обидва разом? Як би ти описав «небезпечність» удару одним числом?</p>
+  </div>
+
+  <div class="cards-grid" style="margin-top:32px;">
+    <div class="card" style="--accent-color:#00d4ff">
+      <span class="card-emoji">🚂</span>
+      <h4>Потяг проти велосипеда</h4>
+      <p>Потяг масою 500 т їде 5 м/с. Велосипед 10 кг їде 10 м/с. Хто небезпечніший? Потяг — у тисячі разів!</p>
+    </div>
+    <div class="card" style="--accent-color:#ff6b35">
+      <span class="card-emoji">🏹</span>
+      <h4>Стріла лучника</h4>
+      <p>Стріла важить лише 30 г, але летить 60 м/с. Результат — пробиває дошку. Швидкість компенсує малу масу.</p>
+    </div>
+    <div class="card" style="--accent-color:#a855f7">
+      <span class="card-emoji">🚀</span>
+      <h4>Ракета і реакція</h4>
+      <p>Реактивні гази вилітають вниз — ракета летить вгору. Імпульс зберігається: система «ракета+паливо» незмінна.</p>
+    </div>
+    <div class="card" style="--accent-color:#22c55e">
+      <span class="card-emoji">🎱</span>
+      <h4>Більярдна куля</h4>
+      <p>При зударі куль імпульс передається. Якщо маси рівні — одна зупиняється, інша рухається з тією ж швидкістю.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: QUESTIONS FOR DISCOVERY -->
+<section style="background:var(--surface); padding:1px 0;">
+<div id="discover" class="section">
+  <div class="section-label">Крок 2 — відкривай самостійно</div>
+  <h2>Запитання, які ведуть до відкриття</h2>
+  <p>Відповідай на ці запитання — і сам прийдеш до формули, яку вивели фізики!</p>
+
+  <div class="question-block">
+    <div class="q-label">Запитання 1</div>
+    <p>Тебе вдарили по руці кулькою масою 50 г зі швидкістю 10 м/с. Потім — кулькою масою 100 г з тією ж швидкістю 10 м/с. Чим відрізнялись удари? <em>(Відповідь: маса більша — удар сильніший. Тобто ефект пропорційний масі.)</em></p>
+  </div>
+  <div class="question-block">
+    <div class="q-label">Запитання 2</div>
+    <p>Та ж кулька 50 г, але швидкість 20 м/с замість 10 м/с. Ефект змінився? Як? <em>(Відповідь: вдвічі сильніший — ефект пропорційний і швидкості.)</em></p>
+  </div>
+  <div class="question-block">
+    <div class="q-label">Запитання 3</div>
+    <p>Якщо ефект залежить від маси І від швидкості — як їх об'єднати в одне число? <em>(Відповідь: перемножити! m × v)</em></p>
+  </div>
+  <div class="question-block">
+    <div class="q-label">Запитання 4 — вищий рівень</div>
+    <p>Гарматний снаряд вилітає вперед. Гармата відкочується назад. Хто «штовхнув» гармату? Якщо ніхто ззовні — чи зберігається щось у цій системі?</p>
+  </div>
+
+  <div class="divider"></div>
+  <h3>🧪 Домашній експеримент 1: «Кулька і пластилін»</h3>
+  <div class="experiment">
+    <div class="exp-label">Домашній дослід</div>
+    <ul class="step-list">
+      <li><div class="step-num">1</div><div>Поклади шматочок пластиліну на рівну поверхню.</div></li>
+      <li><div class="step-num">2</div><div>Кинь в нього монету з висоти 10 см. Виміряй глибину відбитку.</div></li>
+      <li><div class="step-num">3</div><div>Повтори з висоти 40 см (швидкість удвічі більша). Відбиток більший вчетверо? Чому?</div></li>
+      <li><div class="step-num">4</div><div>Тепер кинь монету вдвічі важчу з тієї ж висоти. Як змінився відбиток?</div></li>
+    </ul>
+    <p style="margin-top:12px; font-size:14px; color:var(--text-dim);">Висновок: глибина залежить від маси і швидкості. Ти «вимірюєш» імпульс пластиліном!</p>
+  </div>
+
+  <div class="experiment">
+    <div class="exp-label">Домашній дослід 2 — закон збереження</div>
+    <ul class="step-list">
+      <li><div class="step-num">1</div><div>Поклади два однакові олівці паралельно на столі (рейки). На них — два шматки мила або дві монетки.</div></li>
+      <li><div class="step-num">2</div><div>Клацни по одному — він вдарить другий. Що сталось?</div></li>
+      <li><div class="step-num">3</div><div>Тепер прилип пластиліном одне до одного. Що змінилось після удару?</div></li>
+    </ul>
+    <p style="margin-top:12px; font-size:14px; color:var(--text-dim);">Це класичний дослід Ньютона — маятник Ньютона в домашньому варіанті!</p>
+  </div>
+</div>
+</section>
+
+<!-- SECTION 3: FORMULA -->
+<section id="formula" class="section">
+  <div class="section-label">Крок 3 — математика</div>
+  <h2>Від відчуттів до формул</h2>
+
+  <p>Фізики назвали добуток маси на швидкість <span class="highlight">імпульсом тіла</span> і позначили літерою <span class="highlight">p</span> (від латинського «pulsus» — удар, поштовх).</p>
+
+  <div class="formula-box">
+    <div style="font-size:14px; color:var(--text-dim); letter-spacing:2px; text-transform:uppercase;">Імпульс тіла</div>
+    <div class="formula-main">p = m · v</div>
+    <div class="formula-desc">
+      <div class="formula-item">
+        <div class="sym">p</div>
+        <div class="desc">імпульс [кг·м/с]</div>
+      </div>
+      <div class="formula-item">
+        <div class="sym" style="color:var(--accent2)">m</div>
+        <div class="desc">маса [кг]</div>
+      </div>
+      <div class="formula-item">
+        <div class="sym" style="color:var(--accent3)">v</div>
+        <div class="desc">швидкість [м/с]</div>
+      </div>
+    </div>
+  </div>
+
+  <p>⚠️ Важливо: імпульс — це <span class="highlight3">векторна</span> величина. Він має напрямок! Якщо два тіла рухаються назустріч, їхні імпульси треба додавати зі знаком «мінус».</p>
+
+  <div class="formula-box" style="margin-top:24px;">
+    <div style="font-size:14px; color:var(--text-dim); letter-spacing:2px; text-transform:uppercase;">Закон збереження імпульсу</div>
+    <div class="formula-main" style="font-size:clamp(18px,3vw,32px);">p₁ + p₂ = p₁' + p₂'</div>
+    <p style="margin-top:12px; font-size:14px; color:var(--text-dim);">
+      Якщо на систему тіл не діють зовнішні сили — сумарний імпульс не змінюється
+    </p>
+  </div>
+
+  <h3 style="margin-top:32px;">Одиниці і порядки величин</h3>
+  <table>
+    <tr><th>Об'єкт</th><th>Маса</th><th>Швидкість</th><th>Імпульс</th></tr>
+    <tr><td>Куля пістолета</td><td>10 г</td><td>400 м/с</td><td>4 кг·м/с</td></tr>
+    <tr><td>Футбольний м'яч</td><td>430 г</td><td>30 м/с</td><td>13 кг·м/с</td></tr>
+    <tr><td>Людина (біг)</td><td>70 кг</td><td>3 м/с</td><td>210 кг·м/с</td></tr>
+    <tr><td>Автомобіль</td><td>1500 кг</td><td>30 м/с</td><td>45 000 кг·м/с</td></tr>
+    <tr><td>Потяг</td><td>500 000 кг</td><td>50 м/с</td><td>25 000 000 кг·м/с</td></tr>
+  </table>
+</section>
+
+<!-- SECTION 4: ANIMATIONS -->
+<section id="lab" style="background:var(--surface); padding:60px 0;">
+<div class="section">
+  <div class="section-label">Крок 4 — аніма-лаборато­рія</div>
+  <h2>Інтерактивні експерименти</h2>
+  <p>Змінюй параметри — спостерігай що відбувається. Це ваш власний фізичний симулятор!</p>
+
+  <!-- EXPERIMENT 1: Impulse Calculator + ball animation -->
+  <h3>🎯 Симулятор 1: Імпульс та удар</h3>
+  <p>Куля летить і вдаряє стіну. Бачиш як маса і швидкість впливають на імпульс?</p>
+
+  <div id="anim-collision">
+    <canvas id="collCanvas" width="700" height="160"></canvas>
+    <div class="anim-controls">
+      <div class="slider-group">
+        <label>Маса (кг):</label>
+        <input type="range" id="mass1" min="1" max="20" value="5">
+        <div class="slider-val" id="mass1-val">5</div>
+      </div>
+      <div class="slider-group">
+        <label>Швидкість (м/с):</label>
+        <input type="range" id="vel1" min="1" max="30" value="10">
+        <div class="slider-val" id="vel1-val">10</div>
+      </div>
+      <button class="btn btn-primary" id="launch-btn">▶ Запустити</button>
+      <button class="btn btn-outline" id="reset-btn">↺ Скинути</button>
+    </div>
+    <div class="anim-info">
+      <div class="info-chip">Маса: <span id="info-m">5</span> кг</div>
+      <div class="info-chip">Швидкість: <span id="info-v">10</span> м/с</div>
+      <div class="info-chip">Імпульс: <span id="info-p">50</span> кг·м/с</div>
+      <div class="info-chip">Сила удару (умовно): <span id="info-f">—</span></div>
+    </div>
+  </div>
+
+  <!-- EXPERIMENT 2: Conservation of momentum -->
+  <h3 style="margin-top:40px;">⚖️ Симулятор 2: Закон збереження імпульсу</h3>
+  <p>Два тіла зіштовхуються. Дивись як сумарний імпульс залишається незмінним!</p>
+
+  <div id="anim-conservation">
+    <canvas id="conservCanvas" width="700" height="200"></canvas>
+    <div class="anim-controls">
+      <div class="slider-group">
+        <label>Маса 1 (кг):</label>
+        <input type="range" id="cm1" min="1" max="15" value="5">
+        <div class="slider-val" id="cm1-val">5</div>
+      </div>
+      <div class="slider-group">
+        <label>Маса 2 (кг):</label>
+        <input type="range" id="cm2" min="1" max="15" value="5">
+        <div class="slider-val" id="cm2-val">5</div>
+      </div>
+      <div class="slider-group">
+        <label>Тип зіткнення:</label>
+        <select id="collision-type" style="background:var(--surface2);color:var(--text);border:1px solid rgba(255,255,255,0.2);padding:8px 12px;border-radius:8px;font-family:'Nunito',sans-serif;">
+          <option value="elastic">Пружне</option>
+          <option value="inelastic">Непружне (злипання)</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="conserv-launch">▶ Зіткнути</button>
+      <button class="btn btn-outline" id="conserv-reset">↺ Скинути</button>
+    </div>
+    <div class="anim-info" style="margin-top:12px;">
+      <div class="info-chip">p₁ до: <span id="p1-before">—</span></div>
+      <div class="info-chip">p₂ до: <span id="p2-before">—</span></div>
+      <div class="info-chip">Сума до: <span id="p-total-before">—</span></div>
+      <div class="info-chip">Сума після: <span id="p-total-after" style="color:var(--green)">—</span></div>
+    </div>
+  </div>
+
+  <!-- EXPERIMENT 3: Rocket -->
+  <h3 style="margin-top:40px;">🚀 Симулятор 3: Реактивний рух</h3>
+  <p>Ракета викидає газ вниз — і злітає вгору. Це і є закон збереження імпульсу в дії!</p>
+  <div id="anim-rocket" style="background:var(--surface2);border-radius:16px;padding:20px;border:1px solid rgba(255,255,255,0.07);">
+    <canvas id="rocketCanvas" width="700" height="200"></canvas>
+    <div class="anim-controls">
+      <div class="slider-group">
+        <label>Тяга (умовно):</label>
+        <input type="range" id="thrust" min="1" max="10" value="5">
+        <div class="slider-val" id="thrust-val">5</div>
+      </div>
+      <button class="btn btn-primary" id="rocket-launch">🚀 Запустити</button>
+      <button class="btn btn-outline" id="rocket-reset">↺ Скинути</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SECTION 5: TASKS -->
+<section id="tasks" class="tasks-section">
+<div class="section">
+  <div class="section-label">Крок 5 — перевір себе</div>
+  <h2>Задачі для 7 класу</h2>
+  <p>Спробуй розв'язати самостійно, потім перевір відповідь.</p>
+
+  <!-- BASIC -->
+  <div style="margin-top:32px;">
+    <h3 style="color:var(--green);">Базовий рівень</h3>
+
+    <div class="task-card">
+      <span class="task-level level-basic">Базовий · Задача 1</span>
+      <p>Хокейна шайба масою <strong>170 г</strong> летить зі швидкістю <strong>40 м/с</strong>. Знайдіть імпульс шайби.</p>
+      <button class="btn-answer" onclick="toggleAnswer('ans-b1')">Показати розв'язок</button>
+      <div class="task-answer" id="ans-b1">
+        <div class="answer-title">Розв'язок</div>
+        <p>Дано: m = 170 г = 0,17 кг; v = 40 м/с</p>
+        <p>p = m · v = 0,17 · 40</p>
+        <div class="result">p = 6,8 кг·м/с</div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <span class="task-level level-basic">Базовий · Задача 2</span>
+      <p>Імпульс тіла дорівнює <strong>120 кг·м/с</strong>, а його маса — <strong>15 кг</strong>. Знайдіть швидкість тіла.</p>
+      <button class="btn-answer" onclick="toggleAnswer('ans-b2')">Показати розв'язок</button>
+      <div class="task-answer" id="ans-b2">
+        <div class="answer-title">Розв'язок</div>
+        <p>Дано: p = 120 кг·м/с; m = 15 кг</p>
+        <p>v = p / m = 120 / 15</p>
+        <div class="result">v = 8 м/с</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MID -->
+  <div style="margin-top:32px;">
+    <h3 style="color:var(--yellow);">Середній рівень</h3>
+
+    <div class="task-card">
+      <span class="task-level level-mid">Середній · Задача 3</span>
+      <p>Куля масою <strong>9 г</strong> вилетіла з рушниці зі швидкістю <strong>600 м/с</strong>. Рушниця масою <strong>3 кг</strong> відштовхнулась назад (відкат). Знайдіть швидкість відкату рушниці. До пострілу система була в спокої.</p>
+      <button class="btn-answer" onclick="toggleAnswer('ans-m1')">Показати розв'язок</button>
+      <div class="task-answer" id="ans-m1">
+        <div class="answer-title">Розв'язок (закон збереження імпульсу)</div>
+        <p>До пострілу: p_заг = 0</p>
+        <p>Після: m_кулі · v_кулі + m_рушниці · (-v_рушниці) = 0</p>
+        <p>0,009 · 600 = 3 · v_р</p>
+        <p>v_р = 5,4 / 3</p>
+        <div class="result">v_р = 1,8 м/с</div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <span class="task-level level-mid">Середній · Задача 4</span>
+      <p>Два хлопці стоять на ковзанах. Перший масою <strong>60 кг</strong> відштовхує другого масою <strong>40 кг</strong>. Після поштовху другий рухається зі швидкістю <strong>3 м/с</strong>. З якою швидкістю і в якому напрямку рухатиметься перший? (Початково обидва стояли нерухомо.)</p>
+      <button class="btn-answer" onclick="toggleAnswer('ans-m2')">Показати розв'язок</button>
+      <div class="task-answer" id="ans-m2">
+        <div class="answer-title">Розв'язок</div>
+        <p>Закон збереження: 0 = m₁·(-v₁) + m₂·v₂</p>
+        <p>60 · v₁ = 40 · 3 = 120</p>
+        <p>v₁ = 2 м/с — у протилежному напрямку</p>
+        <div class="result">v₁ = 2 м/с (назад)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HARD -->
+  <div style="margin-top:32px;">
+    <h3 style="color:var(--accent2);">Високий рівень</h3>
+
+    <div class="task-card">
+      <span class="task-level level-hard">Високий · Задача 5</span>
+      <p>Куля масою <strong>20 г</strong>, що летить горизонтально зі швидкістю <strong>400 м/с</strong>, влучає в підвішений ящик з піском масою <strong>5 кг</strong> і застряє в ньому. З якою швидкістю ящик відхилиться після пострілу?</p>
+      <button class="btn-answer" onclick="toggleAnswer('ans-h1')">Показати розв'язок</button>
+      <div class="task-answer" id="ans-h1">
+        <div class="answer-title">Розв'язок (непружній удар)</div>
+        <p>m_кулі = 0,02 кг; v_кулі = 400 м/с; m_ящик = 5 кг; v_ящик = 0</p>
+        <p>p_до = 0,02 · 400 + 5 · 0 = 8 кг·м/с</p>
+        <p>p_після = (m_кулі + m_ящик) · V</p>
+        <p>8 = (0,02 + 5) · V = 5,02 · V</p>
+        <div class="result">V = 8 / 5,02 ≈ 1,59 м/с</div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <span class="task-level level-hard">Високий · Задача 6</span>
+      <p>Два тіла рухаються назустріч одне одному: перше — маса <strong>3 кг</strong>, швидкість <strong>4 м/с</strong>; друге — маса <strong>2 кг</strong>, швидкість <strong>6 м/с</strong>. Після зіткнення вони злипаються разом. Знайдіть швидкість і напрямок руху злиплого тіла.</p>
+      <button class="btn-answer" onclick="toggleAnswer('ans-h2')">Показати розв'язок</button>
+      <div class="task-answer" id="ans-h2">
+        <div class="answer-title">Розв'язок</div>
+        <p>Напрямок тіла 1 — «+», тіла 2 — «−»</p>
+        <p>p_до = 3·4 + 2·(−6) = 12 − 12 = 0 кг·м/с</p>
+        <p>(3+2)·V = 0</p>
+        <div class="result">V = 0 м/с — тіла зупиняться!</div>
+        <p style="margin-top:8px; font-size:13px; color:var(--text-dim);">Цікавий випадок: коли імпульси рівні і протилежні — система після зіткнення нерухома.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:var(--bg); padding:40px 24px; text-align:center; border-top:1px solid rgba(255,255,255,0.06);">
+  <div style="font-family:'Unbounded',sans-serif; font-size:11px; color:var(--text-dim); letter-spacing:2px;">ФІЗИКА 7 КЛАС · ІМПУЛЬС ТІЛА · ©2025</div>
+  <p style="color:var(--text-dim); font-size:13px; margin-top:8px;">Продовжуй досліджувати — наступна тема: Закон збереження енергії ⚡</p>
+</footer>
+
+<script>
+// ===== PARTICLES =====
+(function(){
+  const hero = document.querySelector('.hero');
+  for(let i=0;i<25;i++){
+    const p = document.createElement('div');
+    p.className='particle';
+    const size = Math.random()*6+2;
+    const colors=['rgba(0,212,255,0.4)','rgba(168,85,247,0.4)','rgba(255,107,53,0.3)','rgba(34,197,94,0.3)'];
+    p.style.cssText=`
+      width:${size}px;height:${size}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      left:${Math.random()*100}%;
+      animation-duration:${6+Math.random()*8}s;
+      animation-delay:${Math.random()*8}s;
+    `;
+    hero.appendChild(p);
+  }
+})();
+
+// ===== TOGGLE ANSWER =====
+function toggleAnswer(id){
+  const el=document.getElementById(id);
+  el.classList.toggle('open');
+  const btn = el.previousElementSibling;
+  btn.textContent = el.classList.contains('open') ? 'Сховати розв\'язок' : 'Показати розв\'язок';
+}
+
+// ===== CANVAS HELPERS =====
+function setupCanvas(id){
+  const c=document.getElementById(id);
+  const w=c.parentElement.clientWidth-40;
+  c.width=Math.min(700,w);
+  return c;
+}
+
+// ===== SIMULATION 1: Ball hits wall =====
+(function(){
+  const c=setupCanvas('collCanvas');
+  const ctx=c.getContext('2d');
+  let m=5, v=10, x=60, running=false, exploded=false, animId=null;
+
+  const mSlider=document.getElementById('mass1');
+  const vSlider=document.getElementById('vel1');
+
+  function updateInfo(){
+    m=+mSlider.value; v=+vSlider.value;
+    document.getElementById('mass1-val').textContent=m;
+    document.getElementById('vel1-val').textContent=v;
+    document.getElementById('info-m').textContent=m;
+    document.getElementById('info-v').textContent=v;
+    document.getElementById('info-p').textContent=(m*v).toFixed(0);
+  }
+  mSlider.addEventListener('input',updateInfo);
+  vSlider.addEventListener('input',updateInfo);
+
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    // Track
+    ctx.strokeStyle='rgba(255,255,255,0.1)';
+    ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(40,c.height/2); ctx.lineTo(c.width-60,c.height/2); ctx.stroke();
+
+    // Wall
+    ctx.fillStyle='rgba(0,212,255,0.3)';
+    ctx.fillRect(c.width-60,c.height/2-50,14,100);
+    ctx.fillStyle='rgba(0,212,255,0.6)';
+    ctx.fillRect(c.width-60,c.height/2-50,4,100);
+
+    // Ball
+    const r=Math.min(8+m*0.8,30);
+    if(!exploded){
+      ctx.beginPath();
+      ctx.arc(x, c.height/2, r, 0, Math.PI*2);
+      const grad=ctx.createRadialGradient(x-r*0.3,c.height/2-r*0.3,r*0.1,x,c.height/2,r);
+      grad.addColorStop(0,'#ffffff');
+      grad.addColorStop(0.4,'#ff6b35');
+      grad.addColorStop(1,'rgba(255,107,53,0.2)');
+      ctx.fillStyle=grad;
+      ctx.fill();
+      // velocity arrow
+      ctx.fillStyle='rgba(255,255,255,0.7)';
+      ctx.font='bold 12px Nunito';
+      ctx.fillText(`v=${v} м/с`,x-20,c.height/2-r-8);
+    } else {
+      // explosion
+      for(let i=0;i<12;i++){
+        const a=i*Math.PI/6;
+        const ex=x+Math.cos(a)*30;
+        const ey=c.height/2+Math.sin(a)*30;
+        ctx.beginPath(); ctx.arc(ex,ey,4,0,Math.PI*2);
+        ctx.fillStyle=`hsl(${i*30},100%,60%)`;
+        ctx.fill();
+      }
+      ctx.fillStyle='#ffffff';
+      ctx.font='bold 16px Unbounded, sans-serif';
+      ctx.fillText('Удар! p='+document.getElementById('info-p').textContent+' кг·м/с',c.width/2-120,c.height/2+60);
+      document.getElementById('info-f').textContent = '💥 ' + Math.round(m*v/0.05) + ' Н';
+    }
+  }
+
+  function animate(){
+    if(!running) return;
+    x += v * 0.8;
+    if(x >= c.width-60){
+      exploded=true; running=false;
+      draw(); return;
+    }
+    draw();
+    animId=requestAnimationFrame(animate);
+  }
+
+  document.getElementById('launch-btn').addEventListener('click',()=>{
+    if(animId) cancelAnimationFrame(animId);
+    x=60+Math.min(8+m*0.8,30); exploded=false; running=true;
+    animate();
+  });
+  document.getElementById('reset-btn').addEventListener('click',()=>{
+    if(animId) cancelAnimationFrame(animId);
+    running=false; exploded=false; x=60+Math.min(8+m*0.8,30);
+    document.getElementById('info-f').textContent='—';
+    draw();
+  });
+  updateInfo(); draw();
+})();
+
+// ===== SIMULATION 2: Conservation of momentum =====
+(function(){
+  const c=setupCanvas('conservCanvas');
+  const ctx=c.getContext('2d');
+  let m1=5,m2=5,type='elastic';
+  let x1,x2,v1_init=8,v2_init=-6;
+  let v1,v2,running=false,animId=null,collided=false;
+
+  const cm1s=document.getElementById('cm1');
+  const cm2s=document.getElementById('cm2');
+  const typeS=document.getElementById('collision-type');
+
+  function reset(){
+    m1=+cm1s.value; m2=+cm2s.value; type=typeS.value;
+    const r1=Math.min(10+m1*2,35), r2=Math.min(10+m2*2,35);
+    x1=r1+20; x2=c.width-r2-20;
+    v1=v1_init; v2=v2_init;
+    collided=false;
+    updateBefore();
+  }
+
+  function updateBefore(){
+    document.getElementById('p1-before').textContent=(m1*Math.abs(v1)).toFixed(0)+' кг·м/с';
+    document.getElementById('p2-before').textContent=(m2*Math.abs(v2)).toFixed(0)+' кг·м/с';
+    const total=m1*v1+m2*v2;
+    document.getElementById('p-total-before').textContent=total.toFixed(1)+' кг·м/с';
+    document.getElementById('p-total-after').textContent='—';
+  }
+
+  cm1s.addEventListener('input',()=>{document.getElementById('cm1-val').textContent=cm1s.value; reset(); draw();});
+  cm2s.addEventListener('input',()=>{document.getElementById('cm2-val').textContent=cm2s.value; reset(); draw();});
+  typeS.addEventListener('change',()=>{ reset(); draw(); });
+
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    const h=c.height;
+    const r1=Math.min(10+m1*2,35), r2=Math.min(10+m2*2,35);
+
+    // Floor
+    ctx.fillStyle='rgba(255,255,255,0.05)';
+    ctx.fillRect(0,h-20,c.width,20);
+
+    // Ball 1
+    let g1=ctx.createRadialGradient(x1-r1*0.3,h/2-r1*0.3,r1*0.1,x1,h/2,r1);
+    g1.addColorStop(0,'#ffffff'); g1.addColorStop(0.5,'#00d4ff'); g1.addColorStop(1,'rgba(0,100,180,0.3)');
+    ctx.beginPath(); ctx.arc(x1,h/2,r1,0,Math.PI*2); ctx.fillStyle=g1; ctx.fill();
+    ctx.fillStyle='white'; ctx.font='bold 11px Nunito,sans-serif'; ctx.textAlign='center';
+    ctx.fillText(m1+'кг',x1,h/2+4);
+
+    // Ball 2
+    let g2=ctx.createRadialGradient(x2-r2*0.3,h/2-r2*0.3,r2*0.1,x2,h/2,r2);
+    g2.addColorStop(0,'#ffffff'); g2.addColorStop(0.5,'#ff6b35'); g2.addColorStop(1,'rgba(180,50,0,0.3)');
+    ctx.beginPath(); ctx.arc(x2,h/2,r2,0,Math.PI*2); ctx.fillStyle=g2; ctx.fill();
+    ctx.fillStyle='white'; ctx.textAlign='center';
+    ctx.fillText(m2+'кг',x2,h/2+4);
+
+    // Velocity indicators
+    ctx.textAlign='center'; ctx.font='12px Nunito,sans-serif';
+    if(Math.abs(v1)>0.1){
+      ctx.fillStyle='#00d4ff';
+      ctx.fillText((v1>0?'→':'←')+' '+Math.abs(v1).toFixed(1)+' м/с', x1, h/2-r1-10);
+    }
+    if(Math.abs(v2)>0.1){
+      ctx.fillStyle='#ff6b35';
+      ctx.fillText((v2>0?'→':'←')+' '+Math.abs(v2).toFixed(1)+' м/с', x2, h/2-r2-10);
+    }
+  }
+
+  function animate(){
+    if(!running) return;
+    const r1=Math.min(10+m1*2,35), r2=Math.min(10+m2*2,35);
+    const spd=2.5;
+    x1+=v1*spd; x2+=v2*spd;
+
+    // collision
+    if(!collided && x1+r1>=x2-r2){
+      collided=true;
+      if(type==='elastic'){
+        const nv1=((m1-m2)*v1+2*m2*v2)/(m1+m2);
+        const nv2=((m2-m1)*v2+2*m1*v1)/(m1+m2);
+        v1=nv1; v2=nv2;
+      } else {
+        const combined=(m1*v1+m2*v2)/(m1+m2);
+        v1=combined; v2=combined;
+      }
+      const totalAfter=m1*v1+m2*v2;
+      document.getElementById('p-total-after').textContent=totalAfter.toFixed(1)+' кг·м/с ✓';
+    }
+
+    // boundaries
+    if(x1<=r1){x1=r1;v1=Math.abs(v1);}
+    if(x2>=c.width-r2){x2=c.width-r2;v2=-Math.abs(v2);}
+
+    draw();
+    animId=requestAnimationFrame(animate);
+  }
+
+  document.getElementById('conserv-launch').addEventListener('click',()=>{
+    if(animId) cancelAnimationFrame(animId);
+    reset(); running=true; animate();
+  });
+  document.getElementById('conserv-reset').addEventListener('click',()=>{
+    if(animId) cancelAnimationFrame(animId);
+    running=false; reset(); draw();
+    document.getElementById('p-total-after').textContent='—';
+  });
+
+  reset(); draw();
+})();
+
+// ===== SIMULATION 3: Rocket =====
+(function(){
+  const c=setupCanvas('rocketCanvas');
+  const ctx=c.getContext('2d');
+  let ry=c.height-60, thrust=5, running=false, animId=null;
+  const tSlider=document.getElementById('thrust');
+  tSlider.addEventListener('input',()=>{
+    thrust=+tSlider.value;
+    document.getElementById('thrust-val').textContent=thrust;
+  });
+
+  const particles=[];
+
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    // Stars
+    ctx.fillStyle='rgba(255,255,255,0.5)';
+    for(let i=0;i<50;i++){
+      const sx=(i*137)%c.width, sy=(i*97)%c.height;
+      ctx.fillRect(sx,sy,1,1);
+    }
+    // Ground
+    ctx.fillStyle='rgba(34,197,94,0.2)';
+    ctx.fillRect(0,c.height-15,c.width,15);
+
+    // Exhaust particles
+    particles.forEach((p,i)=>{
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,${Math.floor(p.life*200)},0,${p.life})`;
+      ctx.fill();
+      p.y+=p.vy; p.x+=p.vx; p.life-=0.03; p.r*=0.95;
+    });
+    // remove dead particles
+    for(let i=particles.length-1;i>=0;i--){
+      if(particles[i].life<=0) particles.splice(i,1);
+    }
+
+    // Rocket body
+    const rx=c.width/2;
+    ctx.save();
+    // nozzle flames
+    if(running){
+      const flameH=thrust*6;
+      const flameGrad=ctx.createLinearGradient(rx,ry+30,rx,ry+30+flameH);
+      flameGrad.addColorStop(0,'rgba(255,200,0,0.9)');
+      flameGrad.addColorStop(0.5,'rgba(255,80,0,0.7)');
+      flameGrad.addColorStop(1,'rgba(255,0,0,0)');
+      ctx.beginPath();
+      ctx.moveTo(rx-8,ry+30);
+      ctx.quadraticCurveTo(rx,ry+30+flameH,rx+8,ry+30);
+      ctx.fillStyle=flameGrad; ctx.fill();
+    }
+    // body
+    ctx.fillStyle='#e2e8f0';
+    ctx.fillRect(rx-12,ry,24,40);
+    // nose
+    ctx.beginPath(); ctx.moveTo(rx-12,ry); ctx.lineTo(rx,ry-24); ctx.lineTo(rx+12,ry);
+    ctx.fillStyle='#ff6b35'; ctx.fill();
+    // fins
+    ctx.fillStyle='#94a3b8';
+    ctx.fillRect(rx-22,ry+20,10,20);
+    ctx.fillRect(rx+12,ry+20,10,20);
+    // window
+    ctx.beginPath(); ctx.arc(rx,ry+14,6,0,Math.PI*2);
+    ctx.fillStyle='#00d4ff'; ctx.fill();
+    ctx.restore();
+
+    // altitude text
+    const alt=Math.max(0,Math.round(c.height-ry-60));
+    ctx.fillStyle='white'; ctx.font='14px Nunito,sans-serif'; ctx.textAlign='left';
+    ctx.fillText(`Висота: ${alt} (умовно)`, 20, 30);
+    ctx.fillText(`Тяга: ${thrust}`, 20, 50);
+  }
+
+  function animate(){
+    if(!running) return;
+    ry-=thrust*0.4;
+    if(ry<20){ running=false; draw(); return; }
+    // add exhaust
+    const rx=c.width/2;
+    for(let i=0;i<thrust;i++){
+      particles.push({
+        x:rx+(Math.random()-0.5)*10,
+        y:ry+40,
+        vx:(Math.random()-0.5)*2,
+        vy:thrust*0.5+Math.random()*2,
+        r:3+Math.random()*3,
+        life:0.9
+      });
+    }
+    draw();
+    animId=requestAnimationFrame(animate);
+  }
+
+  document.getElementById('rocket-launch').addEventListener('click',()=>{
+    if(animId) cancelAnimationFrame(animId);
+    ry=c.height-60; running=true; particles.length=0; animate();
+  });
+  document.getElementById('rocket-reset').addEventListener('click',()=>{
+    if(animId) cancelAnimationFrame(animId);
+    running=false; ry=c.height-60; particles.length=0; draw();
+  });
+
+  draw();
+})();
+</script>
+
+</body>
+</html>
